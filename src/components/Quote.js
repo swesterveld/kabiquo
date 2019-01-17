@@ -4,11 +4,13 @@ import * as request from 'superagent'
 
 import './Quote.css'
 
+const OMDB_API_URL = 'https://www.omdbapi.com/'
 const QUOTE_API_URL = 'https://andruxnet-random-famous-quotes.p.rapidapi.com/'
 
 export default class Quote extends Component {
   state = {
-    quote: null
+    quote: null,
+    movie: null
   }
 
   componentDidMount() {
@@ -21,26 +23,47 @@ export default class Quote extends Component {
     })
   }
 
+  setMovie(fetchedMovie) {
+    this.setState({
+      movie: fetchedMovie
+    })
+  }
+
   fetchData() {
     request
       .get(QUOTE_API_URL)
       .set("X-RapidAPI-Key", process.env.REACT_APP_RAPID_API_KEY) // stored in the .env file
       .query({ cat: 'movies' })
       .then(response => this.setQuote(response.body))
+      .then(_ => this.fetchMovie(this.state.quote.author))
+      .catch(console.error)
+  }
+
+  fetchMovie(title) {
+    // first adapt title to OMDb format
+    const movie_title = title.split(' ').join('-')
+    console.log(`title: ${movie_title}`)
+
+    request
+      .get(OMDB_API_URL)
+      .query({ apikey: process.env.REACT_APP_OMDB_API_KEY})
+      .query({ t: movie_title })
+      .query({ type: 'movie' })
+      .then(response => this.setMovie(response.body))
       .catch(console.error)
   }
 
   renderQuote() {
-    if (this.state.quote === null) {
-      return 'Loading quote...'
+    if (this.state.quote === null || this.state.movie === null) {
+      return 'Loading data...'
     }
     else {
       return (
         <div className={'movie-quote group right'}>
-          <img src={'https://placekitten.com/182/268'} alt={'movie poster'}/>
+          <img src={ this.state.movie['Poster'] } alt={'movie poster'}/>
           <div className={'quote-container'}>
             <blockquote>
-              <p>{ this.state.quote.quote }</p>
+              <p>{ this.state.quote['quote'] }</p>
             </blockquote>
             <cite>
               <span>Movie</span><br/>
