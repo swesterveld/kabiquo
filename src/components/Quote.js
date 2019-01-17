@@ -32,7 +32,7 @@ export default class Quote extends Component {
   fetchData() {
     request
       .get(QUOTE_API_URL)
-      .set("X-RapidAPI-Key", process.env.REACT_APP_RAPID_API_KEY) // stored in the .env file
+      .set("X-RapidAPI-Key", localStorage.getItem('REACT_APP_RAPID_API_KEY') || process.env.REACT_APP_RAPID_API_KEY) // stored in the .env file
       .query({ cat: 'movies' })
       .then(response => this.setQuote(response.body))
       .then(_ => this.fetchMovie(this.state.quote.author))
@@ -46,7 +46,7 @@ export default class Quote extends Component {
 
     request
       .get(OMDB_API_URL)
-      .query({ apikey: process.env.REACT_APP_OMDB_API_KEY})
+      .query({ apikey: localStorage.getItem('REACT_APP_OMDB_API_KEY') || process.env.REACT_APP_OMDB_API_KEY})
       .query({ t: movie_title })
       .query({ type: 'movie' })
       .then(response => this.setMovie(response.body))
