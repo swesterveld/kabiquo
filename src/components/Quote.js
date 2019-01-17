@@ -4,13 +4,15 @@ import * as request from 'superagent'
 
 import './Quote.css'
 
+const QUOTE_API_URL = 'https://andruxnet-random-famous-quotes.p.rapidapi.com/'
+
 export default class Quote extends Component {
   state = {
     quote: null
   }
 
   componentDidMount() {
-    this.fetchQuote()
+    this.fetchData()
   }
 
   setQuote(fetchedQuote) {
@@ -19,10 +21,11 @@ export default class Quote extends Component {
     })
   }
 
-  fetchQuote() {
+  fetchData() {
     request
-      .get("https://andruxnet-random-famous-quotes.p.rapidapi.com/?cat=movies")
-      .set("X-RapidAPI-Key", process.env.REACT_APP_API_KEY) // stored in the .env file
+      .get(QUOTE_API_URL)
+      .set("X-RapidAPI-Key", process.env.REACT_APP_RAPID_API_KEY) // stored in the .env file
+      .query({ cat: 'movies' })
       .then(response => this.setQuote(response.body))
       .catch(console.error)
   }
