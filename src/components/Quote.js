@@ -32,8 +32,17 @@ export default class Quote extends Component {
     else {
       return (
         <div>
-          <h2 className={'quote'}>{ this.state.quote.quote }</h2>
-          <h3 className={'author'}>(from the movie: { this.state.quote.author })</h3>
+          <img src={'https://placekitten.com/182/268'}/>
+          <div className={'quote-container'}>
+            <blockquote>
+              <p>{ this.state.quote.quote }</p>
+            </blockquote>
+            <cite>
+              <span>Movie:</span><br/>
+              { this.state.quote.author }
+            </cite>
+          </div>
+          <hr/>
         </div>
       )
     }
@@ -41,10 +50,7 @@ export default class Quote extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Quote</h1>
-        <div>{ this.renderQuote() }</div>
-      </div>
+      <div>{ this.renderQuote() }</div>
     )
   }
 }
