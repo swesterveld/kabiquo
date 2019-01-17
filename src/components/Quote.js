@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 
 import * as request from 'superagent'
 
+import './Quote.css'
+
 export default class Quote extends Component {
   state = {
     quote: null
@@ -31,18 +33,17 @@ export default class Quote extends Component {
     }
     else {
       return (
-        <div>
-          <img src={'https://placekitten.com/182/268'}/>
+        <div className={'movie-quote group right'}>
+          <img src={'https://placekitten.com/182/268'} alt={'movie poster'}/>
           <div className={'quote-container'}>
             <blockquote>
               <p>{ this.state.quote.quote }</p>
             </blockquote>
             <cite>
-              <span>Movie:</span><br/>
+              <span>Movie</span><br/>
               { this.state.quote.author }
             </cite>
           </div>
-          <hr/>
         </div>
       )
     }
@@ -50,7 +51,9 @@ export default class Quote extends Component {
 
   render() {
     return (
-      <div>{ this.renderQuote() }</div>
+      <div className={'centered-component'}>
+        { this.renderQuote() }
+      </div>
     )
   }
 }
