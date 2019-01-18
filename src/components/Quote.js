@@ -10,7 +10,8 @@ const QUOTE_API_URL = 'https://andruxnet-random-famous-quotes.p.rapidapi.com/'
 export default class Quote extends Component {
   state = {
     quote: null,
-    movie: null
+    movie: null,
+    poster: null
   }
 
   componentDidMount() {
@@ -24,8 +25,32 @@ export default class Quote extends Component {
   }
 
   setMovie(fetchedMovie) {
+    /* In some situations there is no movie and/or poster.
+     *
+     * 1. In some cases the API responds with this body:
+     *
+     *    {
+     *      Response: "False",
+     *      Error: "Movie not found!"
+     *    }
+     *
+     * 2. Sometimes there is a movie in the response, but without the attribute 'Poster'
+     *
+     * 3. Sometimes there is a movie in the response, but with the attribute 'Poster' set to 'N/A'
+     */
+
+    if (!Object.keys(fetchedMovie).includes('Error')) {
+      this.setState({
+        movie: fetchedMovie
+      })
+    }
+
+    let poster = 'https://dummyimage.com/182x268/fff/9cc1d3&text=no poster available'
+    if (Object.keys(fetchedMovie).includes('Poster') && fetchedMovie['Poster'] !== 'N/A') {
+      poster = fetchedMovie['Poster']
+    }
     this.setState({
-      movie: fetchedMovie
+      poster: poster
     })
   }
 
@@ -42,7 +67,6 @@ export default class Quote extends Component {
   fetchMovie(title) {
     // first adapt title to OMDb format
     const movie_title = title.split(' ').join('-')
-    console.log(`title: ${movie_title}`)
 
     request
       .get(OMDB_API_URL)
@@ -54,13 +78,13 @@ export default class Quote extends Component {
   }
 
   renderQuote() {
-    if (this.state.quote === null || this.state.movie === null) {
+    if (this.state.quote === null) {
       return 'Loading data...'
     }
     else {
       return (
         <div className={'movie-quote group right'}>
-          <img src={ this.state.movie['Poster'] } alt={'movie poster'}/>
+          <img src={ this.state.poster } alt={'movie poster'}/>
           <div className={'quote-container'}>
             <blockquote>
               <p>{ this.state.quote['quote'] }</p>
