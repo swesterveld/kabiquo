@@ -1,3 +1,40 @@
+# Prerequisites
+
+
+Two different API's are being used in this app:
+
+1. [Random Famous Quotes API (through RapidAPI)](https://rapidapi.com/andruxnet/api/random-famous-quotes)
+2. [OMDb API](http://www.omdbapi.com/)
+
+## Configure API keys
+
+Those API's can only be accessed with the right API key, so it is required to have these API keys configured, before starting the app.
+There are two options to get this done.
+
+### Option 1: Add .env file with the keys
+Add a file called `.env.development.local` in the root of the project, with these contents:
+
+```text
+REACT_APP_RAPID_API_KEY=<key>
+REACT_APP_OMDB_API_KEY=<key>
+```
+
+where `<key>` should be replaced with the API key.
+
+### Option 2: Add API keys to the localStorage
+
+Add two entries to your localStorage, with the right keys.
+The entries should be called `REACT_APP_RAPID_API_KEY` and `REACT_APP_OMDB_API_KEY`.
+
+
+## Node.js environment
+
+To run the app, Node.js is required.
+More info about Node.js could be found at [their website](https://nodejs.org/).
+
+
+# React App
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
